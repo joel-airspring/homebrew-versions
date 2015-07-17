@@ -1,6 +1,6 @@
 class Influxdb08 < Formula
   desc "Time series, events, and metrics database"
-  homepage "http://influxdb.com"
+  homepage "http://influxdb.com/docs/v0.8/index.html"
   url "https://s3.amazonaws.com/get.influxdb.org/influxdb-0.8.8.src.tar.gz"
   sha256 "97fb5a4ffda1b333187ebd6449466d38d864686a3bd50a6c7bfb3deeae06cfae"
 
@@ -32,17 +32,17 @@ class Influxdb08 < Formula
     system "go", "build", "-tags", "leveldb rocksdb", "-o", "influxdb", "github.com/influxdb/influxdb/daemon"
 
     inreplace "config.sample.toml" do |s|
-      s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
-      s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
-      s.gsub! "/tmp/influxdb/development/wal", "#{var}/influxdb/wal"
-      s.gsub! "influxdb.log", "#{var}/influxdb/logs/influxdb.log"
+      s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb08/data"
+      s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb08/raft"
+      s.gsub! "/tmp/influxdb/development/wal", "#{var}/influxdb08/wal"
+      s.gsub! "influxdb.log", "#{var}/influxdb08/logs/influxdb.log"
     end
 
     bin.install "influxdb" => "influxdb"
     etc.install "config.sample.toml" => "influxdb.conf"
 
-    (var/"influxdb/data").mkpath
-    (var/"influxdb/raft").mkpath
+    (var/"influxdb08/data").mkpath
+    (var/"influxdb08/raft").mkpath
   end
 
   plist_options :manual => "influxdb -config=#{HOMEBREW_PREFIX}/etc/influxdb.conf"
@@ -67,11 +67,11 @@ class Influxdb08 < Formula
         <key>RunAtLoad</key>
         <true/>
         <key>WorkingDirectory</key>
-        <string>#{var}</string>
+        <string>#{var}/influxdb08</string>
         <key>StandardErrorPath</key>
-        <string>#{var}/log/influxdb.log</string>
+        <string>#{var}/influxdb08/logs/influxdb.stderr.log</string>
         <key>StandardOutPath</key>
-        <string>#{var}/log/influxdb.log</string>
+        <string>#{var}/influxdb08/logs/influxdb.stdout.log</string>
       </dict>
     </plist>
     EOS
